@@ -45,6 +45,10 @@ body {
   background-color: #f3f7fa;
 }
 
+section {
+  padding: 0 16px;
+}
+
 h1,
 h2 {
   font-family: var(--heading);
@@ -85,16 +89,29 @@ p {
   gap: 8px;
   padding: 8px 16px;
   background-color: var(--accent);
+  border: 1px solid var(--accent);
   border-radius: 3rem;
   color: #fff;
-  border: none;
   cursor: pointer;
   font-weight: 600;
+}
+
+.button--secondary {
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent)
 }
 
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+input {
+  background-color: #ffffff;
+  color: var(--text);
+  border: 1px solid #cccccc;
+  padding: 8px 12px;
 }
 
 .horses {

@@ -40,8 +40,14 @@ function App() {
       <section id="center">
         <h1 className='text-center'>Harry's Horses</h1>
         <div className="horses">
-          <HorseList horses={visibleHorses} onSelectHorse={setSelectedHorseId} />
-          <HorseDetails horse={selectedHorse} />
+          <HorseList 
+            horses={visibleHorses} 
+            onSelectHorse={setSelectedHorseId} 
+          />
+          <HorseDetails 
+            horse={selectedHorse} 
+            onHorseUpdated={(horse) => setSelectedHorse(horse)} 
+          />
         </div>
         <Pagination
           page={page}

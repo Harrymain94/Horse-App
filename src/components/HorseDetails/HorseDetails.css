@@ -9,6 +9,12 @@
 	border-bottom-right-radius: 20px;
 }
 
+.horse-details__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .horse-details__row {
 	font-size: 0.875rem;
 	display: flex;
