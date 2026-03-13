@@ -30,7 +30,6 @@ export function HorseList() {
 
   return (
     <div className="horse-list">
-      <h2 className="horse-list__title">Horses</h2>
 			<div className="horse-list__items">
 				{visibleHorses.map((horse) => (
           <div key={horse.id} className="horse-list__item">
@@ -40,13 +39,15 @@ export function HorseList() {
 			</div>
 			{/* In a production app, we would want to fetch only the horses for the current page instead of fetching all and slicing on the client */}
       <div className="horse-list__pagination">
-				<button disabled={!hasPrevPage} onClick={() => setPage((p) => p - 1)}>
-					Previous
-				</button>
-				<span>Page {page + 1} / {Math.ceil(horses.length / PAGE_SIZE)}</span>
-				<button disabled={!hasNextPage} onClick={() => setPage((p) => p + 1)}>
-					Next
-				</button>
+				<div className="horse-list__pagination-buttons">
+					<button className="button" disabled={!hasPrevPage} onClick={() => setPage((p) => p - 1)}>
+						Previous
+					</button>
+					<button className="button" disabled={!hasNextPage} onClick={() => setPage((p) => p + 1)}>
+						Next
+					</button>
+				</div>
+				<span className="horse-list__pagination-count">Page {page + 1} / {Math.ceil(horses.length / PAGE_SIZE)}</span>
 			</div>
     </div>
   );

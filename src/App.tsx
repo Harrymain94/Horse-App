@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <section id="center">
-        <h1>Welcome to the Horse App</h1>
+        <h1 className='text-center'>Harry's Horses</h1>
         <HorseList />
       </section>
     </>
