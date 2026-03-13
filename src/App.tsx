@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { HorseList } from './components/HorseList/HorseList'
 
 function App() {
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <section id="center">
         <h1>Welcome to the Horse App</h1>
+        <HorseList />
       </section>
     </>
   )
