@@ -1,4 +1,5 @@
 import type { Horse } from "../../types/horse";
+import  { classifyAnimal } from "../../utils/classifyAnimal";
 import "./HorseDetails.css";
 
 interface HorseDetailsProps {
@@ -22,6 +23,11 @@ export function HorseDetails({ horse }: HorseDetailsProps) {
   return (
     <div className="horse-details">
       <h2>{name}</h2>
+
+      <div className="horse-details__row">
+        <span className="horse-details__row-label">Type:</span>
+        <span className="horse-details__row-value">{classifyAnimal(profile?.physical?.weight)}</span>
+      </div>
 
       <div className="horse-details__row">
         <span className="horse-details__row-label">Favourite Food:</span>
