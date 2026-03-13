@@ -46,7 +46,7 @@ export function HorseForm({ initialHorse, onSave, onCancel }: HorseFormProps) {
     <form className="horse-form" onSubmit={handleSubmit}>
       <h2>Edit Horse</h2>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className="form-error">{error}</div>}
 
       <label>
         Name

@@ -114,6 +114,11 @@ input {
   padding: 8px 12px;
 }
 
+.form-error {
+  color: red;
+  font-size: 0.75rem;
+}
+
 .horses {
   display: flex;
 	margin: 40px 0;
