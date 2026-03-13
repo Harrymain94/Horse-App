@@ -13,12 +13,31 @@
 	border-bottom-left-radius: 20px;
 	border: 1px solid #cccccc;
 	height: 100%;
+
 }
 
 .horse-list__item {
   border-bottom: 1px solid #cccccc;
 	padding: 24px;
 	cursor: pointer;
+	position: relative;
+}
+
+.horse-list__item::after {
+  content: "";
+  position: absolute;
+  right: 26px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--text);
+  border-top: 2px solid var(--text);
+  transition: transform 0.15s ease;
+}
+
+.horse-list__item:hover::after {
+  transform: translateY(-50%) rotate(45deg) translateX(3px);
 }
 
 .horse-list__item:first-child {
