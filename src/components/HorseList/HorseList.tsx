@@ -1,41 +1,17 @@
-import { useEffect, useState } from "react";
 import type { Horse } from "../../types/horse";
-import { horseApi } from "../../api/horses";
 import "./HorseList.css";
 
-const PAGE_SIZE = 10;
-
 interface HorseListProps {
+  horses: Horse[];
 	onSelectHorse: (horseId: number) => void;
 }
 
-export function HorseList({ onSelectHorse }: HorseListProps) {
-  const [horses, setHorses] = useState<Horse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(0);
-
-  useEffect(() => {
-    horseApi.getHorses()
-      .then((data) => setHorses(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const start = page * PAGE_SIZE;
-  const end = start + PAGE_SIZE;
-  const visibleHorses = horses.slice(start, end);
-
-  const hasNextPage = end < horses.length;
-  const hasPrevPage = page > 0;
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+export function HorseList({ horses, onSelectHorse }: HorseListProps) {
 
   return (
     <div className="horse-list">
 			<div className="horse-list__items">
-				{visibleHorses.map((horse) => (
+				{horses.map((horse) => (
           <div 
 						key={horse.id} 
 						className="horse-list__item" 
@@ -44,18 +20,6 @@ export function HorseList({ onSelectHorse }: HorseListProps) {
             {horse.name}
           </div>
         ))}
-			</div>
-			{/* In a production app, we would want to fetch only the horses for the current page instead of fetching all and slicing on the client */}
-      <div className="horse-list__pagination">
-				<div className="horse-list__pagination-buttons">
-					<button className="button" disabled={!hasPrevPage} onClick={() => setPage((p) => p - 1)}>
-						Previous
-					</button>
-					<button className="button" disabled={!hasNextPage} onClick={() => setPage((p) => p + 1)}>
-						Next
-					</button>
-				</div>
-				<span className="horse-list__pagination-count">Page {page + 1} / {Math.ceil(horses.length / PAGE_SIZE)}</span>
 			</div>
     </div>
   );
