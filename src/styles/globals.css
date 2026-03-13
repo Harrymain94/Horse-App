@@ -96,3 +96,8 @@ p {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.horses {
+  display: flex;
+	margin: 40px 0;
+}

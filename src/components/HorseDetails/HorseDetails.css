@@ -1,0 +1,24 @@
+.horse-details {
+  flex: 1 1 0;
+	background-color: #ffffff;
+	padding: 24px;
+	border-top: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+}
+
+.horse-details__row {
+	font-size: 0.875rem;
+	display: flex;
+	gap: 8px;
+}
+
+.horse-details__row-label {
+	font-weight: 300;
+}
+
+.horse-details__row-value {
+	font-weight: 500;
+}

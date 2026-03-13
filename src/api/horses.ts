@@ -6,15 +6,15 @@ export const horseApi = {
     return apiClient.get("/horse");
   },
 
-  getHorse(id: string): Promise<Horse> {
+  getHorse(id: number): Promise<Horse> {
     return apiClient.get(`/horse/${id}`);
   },
 
-  createHorse(data: CreateHorseRequest): Promise<{ id: string }> {
+  createHorse(data: CreateHorseRequest): Promise<{ id: number }> {
     return apiClient.put("/horse", data);
   },
 
-  updateHorse(id: string, data: UpdateHorseRequest): Promise<Horse> {
+  updateHorse(id: number, data: UpdateHorseRequest): Promise<Horse> {
     return apiClient.put(`/horse/${id}`, data);
   },
 };

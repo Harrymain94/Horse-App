@@ -5,7 +5,11 @@ import "./HorseList.css";
 
 const PAGE_SIZE = 10;
 
-export function HorseList() {
+interface HorseListProps {
+	onSelectHorse: (horseId: number) => void;
+}
+
+export function HorseList({ onSelectHorse }: HorseListProps) {
   const [horses, setHorses] = useState<Horse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +36,11 @@ export function HorseList() {
     <div className="horse-list">
 			<div className="horse-list__items">
 				{visibleHorses.map((horse) => (
-          <div key={horse.id} className="horse-list__item">
+          <div 
+						key={horse.id} 
+						className="horse-list__item" 
+						onClick={() => onSelectHorse(horse.id)}
+					>
             {horse.name}
           </div>
         ))}
