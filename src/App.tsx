@@ -13,8 +13,24 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [selectedHorseId, setSelectedHorseId] = useState<number | null>(null);
+  const [selectedHorseId, setSelectedHorseId] = useState<string | null>(null);
   const [selectedHorse, setSelectedHorse] = useState<Horse | null>(null);
+
+  const handleSaveHorse = (updatedHorse: Horse) => {
+    setHorses(prev => {
+      const exists = prev.some(h => h.id === updatedHorse.id);
+
+      if (exists) {
+        return prev.map(h =>
+          h.id === updatedHorse.id ? updatedHorse : h
+        );
+      }
+
+      return [...prev, updatedHorse];
+    });
+
+    setSelectedHorse(updatedHorse);
+  };
 
   useEffect(() => {
     horseApi.getHorses()
@@ -39,14 +55,21 @@ function App() {
     <>
       <section id="center">
         <h1 className='text-center'>Harry's Horses</h1>
+        <button className="button" onClick={() => setSelectedHorse({ name: "" })}>
+          Add Horse
+        </button>
         <div className="horses">
           <HorseList 
             horses={visibleHorses} 
-            onSelectHorse={setSelectedHorseId} 
+            onSelectHorse={(id) => {
+              setSelectedHorseId(id);
+              const horse = horses.find(h => h.id === id);
+              if (horse) setSelectedHorse(horse);
+            }}
           />
           <HorseDetails 
             horse={selectedHorse} 
-            onHorseUpdated={(horse) => setSelectedHorse(horse)} 
+            onHorseUpdated={handleSaveHorse}
           />
         </div>
         <Pagination

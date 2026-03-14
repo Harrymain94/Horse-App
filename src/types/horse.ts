@@ -1,5 +1,5 @@
 export interface Horse {
-  id: number;
+  id?: string;
   name: string;
   profile?: HorseProfile;
 }

@@ -3,7 +3,7 @@ import "./HorseList.css";
 
 interface HorseListProps {
   horses: Horse[];
-	onSelectHorse: (horseId: number) => void;
+	onSelectHorse: (horseId: string) => void;
 }
 
 export function HorseList({ horses, onSelectHorse }: HorseListProps) {
@@ -15,7 +15,7 @@ export function HorseList({ horses, onSelectHorse }: HorseListProps) {
           <div 
 						key={horse.id} 
 						className="horse-list__item" 
-						onClick={() => onSelectHorse(horse.id)}
+						onClick={() => onSelectHorse(horse.id!)}
 					>
             {horse.name}
           </div>

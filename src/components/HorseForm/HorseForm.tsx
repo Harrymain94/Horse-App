@@ -1,86 +1,120 @@
 import { useState } from "react";
-import type { Horse, UpdateHorseRequest } from "../../types/horse";
+import type { Horse, UpdateHorseRequest, CreateHorseRequest } from "../../types/horse";
 import "./HorseForm.css";
 
 interface HorseFormProps {
   initialHorse: Horse;
-  onSave: (data: UpdateHorseRequest) => Promise<void>;
+  onSave: (data: UpdateHorseRequest | CreateHorseRequest) => Promise<void>;
   onCancel: () => void;
 }
 
 export function HorseForm({ initialHorse, onSave, onCancel }: HorseFormProps) {
-  const [name, setName] = useState(initialHorse.name);
-  const [favouriteFood, setFavouriteFood] = useState(
-    initialHorse.profile?.favouriteFood ?? ""
-  );
-  const [height, setHeight] = useState(
-    initialHorse.profile?.physical?.height ?? ""
-  );
-  const [weight, setWeight] = useState(
-    initialHorse.profile?.physical?.weight ?? ""
-  );
 
-  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: initialHorse.name || "",
+    weight: initialHorse.profile?.physical?.weight || 0,
+    height: initialHorse.profile?.physical?.height || 0,
+    favouriteFood: initialHorse.profile?.favouriteFood || ""
+  });
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const [errors, setErrors] = useState<{
+    name?: string
+    weight?: string
+    height?: string
+  }>({});
 
-    if (!name.trim()) {
-      setError("Name is required");
-      return;
+  const formValid = Object.keys(errors).length === 0;
+  const isCreateMode = !initialHorse.id;
+
+  const validate = () => {
+    const newErrors: {
+      name?: string
+      weight?: string
+      height?: string
+    } = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
     }
 
-    await onSave({
-      name,
+    if (formData.weight <= 0) {
+      newErrors.weight = "Weight must be greater than 0";
+    }
+
+    if (formData.height <= 0) {
+      newErrors.height = "Height must be greater than 0";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    const payload: UpdateHorseRequest = {
+      name: formData.name,
       profile: {
-        favouriteFood,
+        favouriteFood: formData.favouriteFood,
         physical: {
-          height: Number(height) || undefined,
-          weight: Number(weight) || undefined,
-        },
-      },
-    });
-  }
+          height: formData.height,
+          weight: formData.weight
+        }
+      }
+    };
+    
+    onSave(payload);
+  };
 
   return (
     <form className="horse-form" onSubmit={handleSubmit}>
-      <h2>Edit Horse</h2>
+      <h2>{isCreateMode ? "Add Horse" : "Edit Horse"}</h2>
 
-      {error && <div className="form-error">{error}</div>}
-
-      <label>
-        Name
-        <input value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-
-      <label>
-        Favourite Food
+      <div className="form-group">
+        <label>Name</label>
         <input
-          value={favouriteFood}
-          onChange={(e) => setFavouriteFood(e.target.value)}
+          value={formData.name}
+          onChange={(e) =>
+            setFormData({ ...formData, name: e.target.value })
+          }
         />
-      </label>
+        {errors.name && <div className="form-error">{errors.name}</div>}
+      </div>
 
-      <label>
-        Height
+      <div className="form-group">
+        <label>Favourite Food</label>
         <input
-          type="number"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          value={formData.favouriteFood}
+          onChange={(e) => setFormData({ ...formData, favouriteFood: e.target.value })}
         />
-      </label>
+      </div>
 
-      <label>
-        Weight
+      <div className="form-group">
+        <label>Height</label>
         <input
           type="number"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          value={formData.height}
+          onChange={(e) => setFormData({ ...formData, height: Number(e.target.value) })}
         />
-      </label>
+        {errors.height && <div className="form-error">{errors.height}</div>}
+      </div>
+
+      <div className="form-group">
+        <label>Weight</label>
+        <input
+          type="number"
+          value={formData.weight}
+          onChange={(e) => setFormData({ ...formData, weight: Number(e.target.value) })}
+        />
+        {errors.weight && <div className="form-error">{errors.weight}</div>}
+      </div>
+
 
       <div className="horse-form__actions">
-        <button type="submit" className="button">
+        <button type="submit" className="button" disabled={!formValid}>
           Save
         </button>
 

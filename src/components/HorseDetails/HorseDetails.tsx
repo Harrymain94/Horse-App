@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HorseForm } from "../HorseForm/HorseForm";
 import { horseApi } from "../../api/horses";
 import { classifyAnimal } from "../../utils/classifyAnimal";
@@ -19,19 +19,31 @@ function display(value: unknown): string {
 
 export function HorseDetails({ horse, onHorseUpdated }: HorseDetailsProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const isNewHorse = !horse?.id;
+
+  useEffect(() => {
+    setIsEditing(false);
+  }, [horse?.id]);
 
   if (!horse) {
     return <div className="horse-details">Select a horse to view details</div>;
   }
 
-  if (isEditing) {
+  if (isEditing || isNewHorse) {
     return (
       <HorseForm
         initialHorse={horse}
         onCancel={() => setIsEditing(false)}
         onSave={async (data) => {
-          const updated = await horseApi.updateHorse(horse.id, data);
-          onHorseUpdated(updated);
+          let result;
+
+          if (!horse.id) {
+            const created = await horseApi.createHorse(data);
+            result = await horseApi.getHorse(created);
+          } else {
+            result = await horseApi.updateHorse(horse.id, data);
+          }
+          onHorseUpdated(result);
           setIsEditing(false);
         }}
       />
