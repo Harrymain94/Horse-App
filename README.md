@@ -1,73 +1,107 @@
-# React + TypeScript + Vite
+# Horse App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + TypeScript application for managing horse records.
 
-Currently, two official plugins are available:
+The application allows users to view, create, and edit horses through a simple CRUD interface connected to a REST API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* View a list of horses
+* Create a new horse
+* Edit an existing horse
+* Client-side pagination
+* Simple form interface for horse details
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* React
+* TypeScript
+* Basic CSS styling
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Running the Application
+
+### 1. Install dependencies
+
+```
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Start the application
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+npm start
+```
+
+The app will run at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## API Requirements
+
+The frontend expects an API running locally with the following endpoints:
+
+| Method | Endpoint      | Description              |
+| ------ | ------------- | ------------------------ |
+| GET    | `/horse`      | Retrieve all horses      |
+| POST   | `/horse`      | Create a new horse       |
+| PUT    | `/horse/{id}` | Update an existing horse |
+
+The API is expected to run at:
+
+```
+http://localhost:3016
+```
+
+---
+
+## Notes
+
+* Pagination is implemented client-side.
+* Styling is intentionally minimal to focus on application functionality.
+* See `ASSUMPTIONS.md` for implementation assumptions and limitations.
+
+## Testing Approach
+
+Due to the time constraints of the exercise, automated tests were not implemented. However, deliberate manual testing was performed to ensure the core functionality behaves as expected.
+
+### Key scenarios tested
+
+**Horse creation**
+
+* Creating a new horse successfully updates the Horse List state.
+* Newly created horses appear in the correct paginated position.
+* Creating new horses correctly updates pagination.
+
+**Horse updates**
+
+* Editing an existing horse updates the correct item in the list.
+* Updates persist correctly in the UI after saving.
+
+**Pagination**
+
+* Pagination correctly limits the list to 10 horses per page.
+* When the number of horses exceeds 10, additional pages appear.
+* Navigating between pages displays the correct subset of horses.
+
+**Edge cases considered**
+
+* Creating a horse without an existing `id`.
+* Updating a horse while pagination is active.
+* Ensuring the UI state updates correctly when horses are added or modified.
+
+### Future testing improvements
+
+With additional time, automated tests would be added for:
+
+* Component rendering and interactions (e.g., form submission, pagination controls).
+* Edge cases such as API failures or invalid input.
