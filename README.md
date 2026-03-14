@@ -105,3 +105,11 @@ With additional time, automated tests would be added for:
 
 * Component rendering and interactions (e.g., form submission, pagination controls).
 * Edge cases such as API failures or invalid input.
+
+## Post-Submission Improvement
+
+After submitting the initial solution, a small UX issue was identified in the form validation behaviour.
+
+Previously, when validation failed the **Save** button became disabled, which prevented the user from correcting the form and immediately attempting to resubmit. This behaviour was adjusted so that the button remains enabled while validation feedback is displayed.
+
+This change was made to better align with common UX patterns for form validation.
