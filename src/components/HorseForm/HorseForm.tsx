@@ -12,37 +12,28 @@ export function HorseForm({ initialHorse, onSave, onCancel }: HorseFormProps) {
 
   const [formData, setFormData] = useState({
     name: initialHorse.name || "",
-    weight: initialHorse.profile?.physical?.weight || 0,
-    height: initialHorse.profile?.physical?.height || 0,
+    weight: initialHorse.profile?.physical?.weight ?? undefined,
+    height: initialHorse.profile?.physical?.height ?? undefined,
     favouriteFood: initialHorse.profile?.favouriteFood || ""
   });
 
   const [errors, setErrors] = useState<{
-    name?: string
-    weight?: string
+    name?: string,
+    weight?: string,
     height?: string
   }>({});
 
-  const formValid = Object.keys(errors).length === 0;
   const isCreateMode = !initialHorse.id;
 
   const validate = () => {
     const newErrors: {
-      name?: string
-      weight?: string
+      name?: string,
+      weight?: string,
       height?: string
     } = {};
 
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
-    }
-
-    if (formData.weight <= 0) {
-      newErrors.weight = "Weight must be greater than 0";
-    }
-
-    if (formData.height <= 0) {
-      newErrors.height = "Height must be greater than 0";
     }
 
     setErrors(newErrors);
@@ -97,7 +88,12 @@ export function HorseForm({ initialHorse, onSave, onCancel }: HorseFormProps) {
         <input
           type="number"
           value={formData.height}
-          onChange={(e) => setFormData({ ...formData, height: Number(e.target.value) })}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              height: e.target.value === "" ? undefined : Number(e.target.value)
+            })
+          }
         />
         {errors.height && <div className="form-error">{errors.height}</div>}
       </div>
@@ -107,14 +103,19 @@ export function HorseForm({ initialHorse, onSave, onCancel }: HorseFormProps) {
         <input
           type="number"
           value={formData.weight}
-          onChange={(e) => setFormData({ ...formData, weight: Number(e.target.value) })}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              weight: e.target.value === "" ? undefined : Number(e.target.value)
+            })
+          }
         />
         {errors.weight && <div className="form-error">{errors.weight}</div>}
       </div>
 
 
       <div className="horse-form__actions">
-        <button type="submit" className="button" disabled={!formValid}>
+        <button type="submit" className="button">
           Save
         </button>
 
